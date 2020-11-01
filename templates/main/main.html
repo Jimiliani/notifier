@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(43, 43, 52);
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .ubuntu-font {
+            font-family: 'Ubuntu', sans-serif !important;
+        }
+
+        .app-name {
+            font-size: 7em;
+        }
+
+        .title {
+            color: whitesmoke;
+            text-align: right;
+        {#letter-spacing: 2px;#}{#margin-left: 25%;#}{#margin-right: 35%;#}{#margin-top: 10%;#}
+        }
+
+    </style>
+{% endblock %}
+{% block body %}
+    <body>
+    <div class="row row" style="max-width: 100%">
+        <div class="col-md-7">
+            <img src="../../media/main/concert.png" style="max-width: 50%">
+        </div>
+        <div class="title col-md-5 align-self-center">
+            <h1 class="app-name">Notifier</h1>
+            <p class="mr-5 mb-5"> We now what you need</p>
+            <div class="mr-1 ">
+                <a href="#" class="btn btn-outline-light mr-3 ml-3 border-0">Регистрация</a>
+                <a href="#" class="btn btn-outline-light mr-3 ml-3 border-0">Вход</a>
+                <button type="button" class="btn btn-outline-light mr-3 ml-3 border-0">Перейти к событиям</button>
+            </div>
+        </div>
+    </div>
+    </body>
+{% endblock %}
