@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -10,20 +11,32 @@ class Profile(models.Model):
         (FEMALE, 'Female'),
         (OTHER, 'Other'),
     ]
+    user = models.OneToOneField(User, related_name='profile', verbose_name='Пользователь', on_delete=models.CASCADE)
     interests = models.ManyToManyField('Interest', related_name='profiles', verbose_name='Интересы')
-    gender = models.CharField(choices=GENDER_CHOICE, max_length=2, verbose_name='Пол')
-    about = models.TextField(max_length=1000, verbose_name='О пользователе')
-    vk_id = models.IntegerField(verbose_name='Идентификатор пользователя во вконтакте')
-    inst_id = models.IntegerField(verbose_name='Идентификатор пользователя в инстаграме')
+    gender = models.CharField(choices=GENDER_CHOICE, max_length=2, verbose_name='Пол', null=True, blank=True)
+    about = models.TextField(max_length=1000, verbose_name='О пользователе', null=True, blank=True)
+    vk_id = models.IntegerField(verbose_name='Идентификатор пользователя во вконтакте', null=True)
+    inst_id = models.IntegerField(verbose_name='Идентификатор пользователя в инстаграме', null=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 class Interest(models.Model):
     name = models.CharField(max_length=25)
 
+    def __str__(self):
+        return self.name
+
 
 class Event(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
     description = models.TextField(max_length=1000, verbose_name='Описание')
-    date = models.DateTimeField(null=True, blank=True, verbose_name='Дата проведения')
+    date = models.DateTimeField(null=True, verbose_name='Дата проведения')
     image = models.ImageField(upload_to='events', verbose_name='Изображение')
-    tags = models.ManyToManyField('Interest', related_name='events', verbose_name='С какими интересами связано')
+    tags = models.ManyToManyField('Interest', related_name='events', verbose_name='Связанные интересы')
+    going_to_participate = models.ManyToManyField('Profile', related_name='going_to_participate',
+                                                  verbose_name='Собираются Учавствовать')
+
+    def __str__(self):
+        return self.name

@@ -8,7 +8,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 class EventAdmin(admin.ModelAdmin):
-    filter_horizontal = ['tags', ]
+    filter_horizontal = ['tags', 'going_to_participate', ]
 
 
 admin.site.register(Profile, ProfileAdmin)
