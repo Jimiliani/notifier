@@ -2,42 +2,209 @@
 {% block styles %}
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: rgb(43, 43, 52);
-            font-family: 'Ubuntu', sans-serif;
-        }
-
         .ubuntu-font {
             font-family: 'Ubuntu', sans-serif !important;
         }
 
         .app-name {
-            font-size: 7em;
+            font-size: 11vw;
         }
 
         .title {
             color: whitesmoke;
-            text-align: right;
-        {#letter-spacing: 2px;#}{#margin-left: 25%;#}{#margin-right: 35%;#}{#margin-top: 10%;#}
+            text-align: center;
+            margin-top: 25vh;
+            margin-bottom: 25vh;
         }
+
+        .white-text {
+            color: whitesmoke;
+        }
+
+        .bg-dark {
+            background-color: rgb(43, 43, 52);
+        }
+
+        .card {
+            -webkit-transition: 2s ease;
+        }
+
+        .card:hover {
+            z-index: 10;
+            transform: scale(1.05);
+            transition-duration: 1s;
+        }
+
+        .small-circle {
+            display: block;
+            background: black;
+            border-radius: 0 0 100% 0;
+            height: 12vw;
+            width: 12vw;
+            position: absolute;
+            -webkit-transition: 2s ease;
+            animation: 1s ease-out 0s 1 makeSmallCircle;
+        }
+
+
+        .middle-circle {
+            display: block;
+            background: rgb(16, 16, 19);
+            border-radius: 0 0 100% 0;
+            height: 24vw;
+            width: 24vw;
+            position: absolute;
+            -webkit-transition: 2s ease;
+            animation: 1s ease-out 0s 1 makeMiddleCircle;
+        }
+
+        .big-circle {
+            display: block;
+            background: rgb(27, 27, 33);
+            border-radius: 0 0 100% 0;
+            height: 36vw;
+            width: 36vw;
+            position: absolute;
+            -webkit-transition: 2s ease;
+            animation: 1s ease-out 0s 1 makeBigCircle;
+        }
+
+        .big-circle:hover {
+            height: 38vw;
+            width: 38vw;
+            transition-duration: 1s;
+        }
+
+        .middle-circle:hover {
+            height: 26vw;
+            width: 26vw;
+            transition-duration: 1s;
+        }
+
+        .small-circle:hover {
+            height: 14vw;
+            width: 14vw;
+            transition-duration: 1s;
+        }
+
+        .auth {
+            display: block;
+            position: absolute;
+            margin-left: 1vw;
+            margin-top: 1vw;
+        }
+
+        @keyframes makeSmallCircle {
+            0% {
+                height: 0;
+                width: 0;
+            }
+            100% {
+                height: 12vw;
+                width: 12vw;
+            }
+        }
+
+        @keyframes makeMiddleCircle {
+            0% {
+                height: 0;
+                width: 0;
+            }
+            100% {
+                height: 24vw;
+                width: 24vw;
+            }
+        }
+
+        @keyframes makeBigCircle {
+            0% {
+                height: 0;
+                width: 0;
+            }
+            100% {
+                height: 36vw;
+                width: 36vw;
+            }
+        }
+
 
     </style>
 {% endblock %}
-{% block body %}
+{% block main %}
     <body>
-    <div class="row row" style="max-width: 100%">
-        <div class="col-md-7">
-            <img src="../../media/main/concert.png" style="max-width: 50%">
-        </div>
-        <div class="title col-md-5 align-self-center">
+    <figure class="big-circle"></figure>
+    <figure class="middle-circle"></figure>
+    <figure class="small-circle"></figure>
+    <a href="{% url 'login' %}" class="btn btn-outline-light border-0 auth">Вход</a>
+    <div class="row" style="max-width: 100%">
+        <div class="title col-md-6 ">
             <h1 class="app-name">Notifier</h1>
-            <p class="mr-5 mb-5"> We now what you need</p>
-            <div class="mr-1 ">
-                <a href="#" class="btn btn-outline-light mr-3 ml-3 border-0">Регистрация</a>
-                <a href="#" class="btn btn-outline-light mr-3 ml-3 border-0">Вход</a>
-                <button type="button" class="btn btn-outline-light mr-3 ml-3 border-0">Перейти к событиям</button>
+            <button class="btn btn-outline-light border-0" style="font-size: 24px">Найти события</button>
+        </div>
+        <div class="card-columns col-md-6 align-self-center mt-4">
+            <div class="card bg-dark ml-2" style="margin-top: 128px; display: none">
+                <img class="card-img border-0" src="../../media/main/white.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                    {#                    <p class="card-text white-text">Театр</p>#}
+                </div>
+            </div>
+            <div class="card bg-dark mt-2 ml-2" style="display: none">
+                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                    {#                    <p class="card-text">Театр</p>#}
+                </div>
+            </div>
+            <div class="card bg-dark ml-2" style="display: none">
+                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                    {#                    <p class="card-text">Театр</p>#}
+                </div>
+            </div>
+            <div class="card bg-dark mt-2 ml-2" style="display: none">
+                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                    {#                    <p class="card-text">Театр</p>#}
+                </div>
+            </div>
+            <div class="card bg-dark mt-2 ml-2" style="display: none">
+                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                    {#                    <p class="card-text">Театр</p>#}
+                </div>
+            </div>
+            <div class="card bg-dark mt-4 ml-2" style="display: none">
+                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                    {#                    <p class="card-text">Театр</p>#}
+                </div>
+            </div>
+            <div class="card bg-dark mt-2 ml-2" style="display: none">
+                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                    {#                    <p class="card-text">Театр</p>#}
+                </div>
             </div>
         </div>
     </div>
+    {% block scripts %}
+        <script>
+            function fadeInCard(card) {
+                console.log(card);
+                card.fadeIn();
+            }
+
+            function getRandomInt(max) {
+                return Math.floor(Math.random() * Math.floor(max));
+            }
+
+            $(window).on('load', function () {
+                $('.card').each(function () {
+                    let num = getRandomInt(1000)
+                    console.log(num)
+                    setTimeout(() => fadeInCard($(this)), num)
+                })
+            })
+        </script>
+    {% endblock %}
     </body>
 {% endblock %}
