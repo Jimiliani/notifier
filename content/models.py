@@ -29,6 +29,15 @@ class Interest(models.Model):
         return self.name
 
 
+class Intent(models.Model):
+    event = models.OneToOneField('Event', related_name='intent', on_delete=models.CASCADE, verbose_name='Событие')
+    profile = models.OneToOneField('Profile', related_name='intent', on_delete=models.CASCADE, verbose_name='Профиль')
+    visited = models.BooleanField(default=False, verbose_name='Уже посещено')
+
+    def __str__(self):
+        return str(self.profile) + ' ' + str(self.event)
+
+
 class Event(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
     description = models.TextField(max_length=1000, verbose_name='Описание')
@@ -36,7 +45,7 @@ class Event(models.Model):
     image = models.ImageField(upload_to='events', verbose_name='Изображение')
     tags = models.ManyToManyField('Interest', related_name='events', verbose_name='Связанные интересы')
     going_to_participate = models.ManyToManyField('Profile', related_name='going_to_participate',
-                                                  verbose_name='Собираются Учавствовать')
+                                                  verbose_name='Собираются учавствовать', through='Intent')
 
     def __str__(self):
         return self.name

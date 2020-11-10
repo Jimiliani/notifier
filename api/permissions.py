@@ -9,3 +9,11 @@ class IsProfileOwnerOrReadOnly(permissions.BasePermission):
             return True
         profile_pk = view.kwargs.get('profile_pk', False)
         return request.user.profile.pk == profile_pk
+
+
+class IsProfileOwner(permissions.BasePermission):
+    message = 'You are not owner of this information'
+
+    def has_permission(self, request, view):
+        profile_pk = view.kwargs.get('profile_pk', False)
+        return request.user.profile.pk == profile_pk
