@@ -45,7 +45,9 @@ class Event(models.Model):
     image = models.ImageField(upload_to='events', verbose_name='Изображение')
     tags = models.ManyToManyField('Interest', related_name='events', verbose_name='Связанные интересы')
     going_to_participate = models.ManyToManyField('Profile', related_name='going_to_participate',
-                                                  verbose_name='Собираются учавствовать', through='Intent')
+                                                  verbose_name='Собираются учавствовать', through='Intent', blank=True)
+    looking_for_a_company = models.ManyToManyField('Profile', related_name='looking_for_a_company_to',
+                                                   verbose_name='Ищут компанию', blank=True)
 
     def __str__(self):
         return self.name

@@ -97,7 +97,7 @@
     </style>
 {% endblock %}
 {% block head %}
-            <title>Вход</title>
+    <title>Вход</title>
 {% endblock %}
 {% block main %}
     <figure class="circle big-circle"></figure>
@@ -109,14 +109,16 @@
          style="max-width: 30%; min-width: 250px !important; margin-top: 25vh; margin-bottom: 25vh;
                 background-color: rgb(27, 27, 33); border-radius: 25px">
         {% csrf_token %}
-        <form class="white-text" id="login-form">
+        <form class="white-text" id="login-form" role="form" method="post">
             <h2 class="mt-2" style="text-align: center">Вход</h2>
+            {% csrf_token %}
             <p>
-                <input type="text" placeholder="Логин" style="width: 100%">
+                <input type="text" name="username" placeholder="Логин" style="width: 100%">
             </p>
             <p>
-                <input type="password" placeholder="Пароль" style="width: 100%">
+                <input type="password" name="password" placeholder="Пароль" style="width: 100%">
             </p>
+            {% if error %}{{ error }}{% endif %}
         </form>
         <button type="submit" form="login-form" class="white-text btn btn-outline-light">Готово</button>
     </div>

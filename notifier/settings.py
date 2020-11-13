@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'content.apps.ContentConfig',
     'api.apps.ApiConfig',
-    'chats'
+    'chats.apps.ChatsConfig',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,3 +150,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
+
+CHAT_MAX_WAITING_TIME = 60

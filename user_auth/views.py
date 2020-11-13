@@ -15,6 +15,7 @@ class RegistrationView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        print(form.errors)
         if form.is_valid():
             User.objects.create_user(username=form.cleaned_data['username'],
                                      email=form.cleaned_data['email'],
@@ -23,4 +24,5 @@ class RegistrationView(View):
                                      last_name=form.cleaned_data['last_name'])
             return redirect('userprofile:login')
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form,
+                                                    'errors': form.errors})
