@@ -33,13 +33,12 @@ class InterestView(ListAPIView):
 class ToggleInterestsOnProfile(APIView):
 
     def post(self, request, profile_pk, *args, **kwargs):
-        interests_to_add = json.loads(request.POST['interests_to_add']) or []
-        interests_to_remove = json.loads(request.POST['interests_to_remove']) or []
-        ThroughModel = Profile.interests.through
-        ThroughModel.objects.bulk_create([
-            ThroughModel(profile_id=profile_pk, interest_id=interest) for interest in interests_to_add
-        ])
-        ThroughModel.objects.filter(profile_id=profile_pk, interest_id__in=interests_to_remove).delete()
+        profile = get_object_or_404(Profile, pk=profile_pk)
+        profile.interests.clear()
+        interests = json.loads(request.POST['interests']) or []
+        for interest_id in interests:
+            interest = Interest.objects.get_or_create(id=interest_id)[0]
+            profile.interests.add(interest)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -73,4 +72,4 @@ class RecommendedEventsView(ListAPIView):
         interests = get_object_or_404(Profile, pk=profile_pk).interests.values('id')
         return Event.objects.annotate(
             recommendations=Count('tags', filter=Q(tags__in=interests))
-        ).order_by('-recommendations')  # одна из самых гениальных вещей, которые я писал на данный момент
+        ).order_by('-recommendations')

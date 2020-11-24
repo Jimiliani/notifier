@@ -97,7 +97,7 @@
     </style>
 {% endblock %}
 {% block head %}
-            <title>Регистрация</title>
+    <title>Регистрация</title>
 {% endblock %}
 {% block main %}
     <figure class="circle big-circle"></figure>
@@ -108,19 +108,22 @@
     <div class="container d-flex justify-content-center flex-column pb-3"
          style="max-width: 30%; min-width: 250px !important; margin-top: 25vh; margin-bottom: 25vh;
                 background-color: rgb(27, 27, 33); border-radius: 25px">
-        {% csrf_token %}
-        <form class="white-text" id="login-form">
+        <form class="white-text" method="post" id="registration-form" action="{% url 'registration' %}">
+            {% csrf_token %}
             <h2 class="mt-2" style="text-align: center">Регистрация</h2>
             <p>
-                <input type="text" placeholder="Логин" style="width: 100%">
+                <input type="text" name="username" placeholder="Логин" value="{{ username }}" style="width: 100%">
             </p>
             <p>
-                <input type="password" placeholder="Пароль" style="width: 100%">
+                <input type="password" name="password1" placeholder="Пароль" style="width: 100%">
             </p>
             <p>
-                <input type="email" placeholder="Эл. почта" style="width: 100%">
+                <input type="password" name="password2" placeholder="Повторите пароль" style="width: 100%">
+            </p>
+            <p>
+                <input type="email" name="email" placeholder="Эл. почта" value="{{ email }}" style="width: 100%">
             </p>
         </form>
-        <button type="submit" form="login-form" class="white-text btn btn-outline-light">Готово</button>
+        <button type="submit" form="registration-form" class="white-text btn btn-outline-light">Готово</button>
     </div>
 {% endblock %}

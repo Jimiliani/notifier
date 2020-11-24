@@ -26,8 +26,6 @@
             },
             success: function (data) {
                 console.log(data);
-                console.log(data.success);
-                console.log(typeof data.success);
                 console.log('success');
                 if (data.success == true) {
                     window.location.href = 'http://127.0.0.1:8000' + '/chat/event/' + data.event_pk + '/room/' + data.room_name;

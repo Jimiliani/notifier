@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'channels',
-    'user_auth.apps.AuthConfig',
+    'user_auth',
     'main.apps.MainConfig',
-    'content.apps.ContentConfig',
+    'content',
     'api.apps.ApiConfig',
     'chats.apps.ChatsConfig',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,6 +125,15 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Moscow'
+
+CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
 
 USE_I18N = True
 

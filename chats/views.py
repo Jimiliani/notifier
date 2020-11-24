@@ -17,7 +17,6 @@ from content.models import Event
 def get_random_string():
     letters = string.ascii_letters
     result_str = ''.join(random.choice(letters) for i in range(64))
-    print("Random string is:", result_str)
     return result_str
 
 
@@ -60,7 +59,6 @@ def waiting_for_entering_chat(request, event_pk):
     if OneToOneRoom.objects.filter(Q(user1=current_user_profile) | Q(user2=current_user_profile),
                                    event=event).exists():
         room_ = OneToOneRoom.objects.get(Q(user1=current_user_profile) | Q(user2=current_user_profile), event=event)
-        print('redirect')
         return JsonResponse({'success': True,
                              'event_pk': event.pk,
                              'room_name': room_.room_name})

@@ -7,3 +7,10 @@ class ProfileView(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+
+class EventsView(View):
+    template_name = 'content/events.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)

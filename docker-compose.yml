@@ -3,7 +3,26 @@ version: "3.7"
 services:
   redis:
     image: redis
+    restart: always
     volumes:
       - ./data:/data
     ports:
       - 6379:6379
+  web:
+    build: .
+    restart: always
+    command: python3 manage.py runserver
+    volumes:
+    - .:/code
+    ports:
+    - 8000:8000
+  celery:
+    build: .
+    command: celery -A core worker -B
+    volumes:
+    - .:/code
+    links:
+      - redis
+    depends_on:
+      - web
+      - redis

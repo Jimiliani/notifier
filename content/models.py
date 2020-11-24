@@ -41,7 +41,8 @@ class Intent(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
     description = models.TextField(max_length=1000, verbose_name='Описание')
-    date = models.DateTimeField(null=True, verbose_name='Дата проведения')
+    date = models.DateTimeField(verbose_name='Дата проведения')
+    place = models.CharField(verbose_name='Место проведения', max_length=100, null=True, blank=True)
     image = models.ImageField(upload_to='events', verbose_name='Изображение')
     tags = models.ManyToManyField('Interest', related_name='events', verbose_name='Связанные интересы')
     going_to_participate = models.ManyToManyField('Profile', related_name='going_to_participate',
