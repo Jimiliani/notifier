@@ -1,28 +1,55 @@
-version: "3.7"
+version: "3.8"
 
 services:
-  redis:
-    image: redis
-    restart: always
+  db:
+    image: postgres
+    container_name: "postgres_app"
     volumes:
-      - ./data:/data
-    ports:
-      - 6379:6379
+    - pgdata:/var/lib/postgresql/data/
+    env_file:
+      - .env
+  redis:
+    image: redis:alpine
+    container_name: "redis_app"
   web:
     build: .
-    restart: always
-    command: python3 manage.py runserver
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    container_name: "web_app"
     volumes:
     - .:/code
     ports:
-    - 8000:8000
+    - "8000:8000"
+    links:
+      - db
+      - redis
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
   celery:
     build: .
-    command: celery -A core worker -B
+    command: celery --app=notifier worker --loglevel=debug
+    container_name: "celery_app"
     volumes:
-    - .:/code
-    links:
-      - redis
+      - .:/code
     depends_on:
       - web
       - redis
+    env_file:
+      - .env
+#  flower:
+#    image: mher/flower:0.9.5
+#    container_name: "flower_app"
+#    ports:
+#      - 8888:8888
+#    environment:
+#      - CELERY_BROKER_URL=redis://redis:6379/0
+#      - FLOWER_PORT=8888
+#    depends_on:
+#      - redis
+#      - celery
+#      - web
+
+volumes:
+  pgdata:

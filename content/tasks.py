@@ -1,22 +1,20 @@
-from celery import Celery
-from celery.schedules import crontab
-from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from __future__ import absolute_import, unicode_literals
 
-from notifier.settings import EMAIL_HOST_USER
+from celery import shared_task
 
-app = Celery()
+import time
 
 
-@app.task
-def send_scheduled_email():
-    emails = User.objects.values_list('email', flat=True).distinct('email').exclude(email='')
-    send_mail(
-        'Notifier',
-        'Привет, это ежесекундная рассылка спама от Димы Королева!',
-        EMAIL_HOST_USER,
-        list(emails)
-    )
-    print(emails)
-    print(list(emails))
-    print('email sent')
+@shared_task
+def send_notifications():
+    print('notifications successfully sent')
+
+
+@shared_task
+def get_and_add_new_events():
+    print('events added')
+
+
+@shared_task
+def send_recommendations():
+    print('recommendations sent')

@@ -9,6 +9,7 @@ from user_auth.forms import RegistrationForm
 from notifier.settings import EMAIL_HOST_USER
 
 
+
 class RegistrationView(View):
     template_name = 'user_auth/registration.html'
     form_class = RegistrationForm
