@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from content.models import Interest, Profile, Event
+from content.models import Profile, Event
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,15 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 
-class InterestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Interest
-        fields = '__all__'
-
-
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False, read_only=True)
-    interests = InterestSerializer(many=True, read_only=True)
 
     class Meta:
         model = Profile
@@ -34,7 +27,6 @@ class ProfilePkSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     going_to_participate = ProfilePkSerializer(many=True, read_only=True)
-    tags = InterestSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event

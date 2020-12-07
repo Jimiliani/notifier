@@ -9,9 +9,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
-from content.models import Profile, Event, Interest, Intent
+from content.models import Profile, Event, Intent
 from .permissions import IsProfileOwnerOrReadOnly, IsProfileOwner
-from .serializers import ProfileSerializer, InterestSerializer, EventSerializer
+from .serializers import ProfileSerializer, EventSerializer
 
 
 class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
@@ -23,23 +23,6 @@ class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
 class EventView(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     serializer_class = EventSerializer
     queryset = Event.objects.all()
-
-
-class InterestView(ListAPIView):
-    serializer_class = InterestSerializer
-    queryset = Interest.objects.all()
-
-
-class ToggleInterestsOnProfile(APIView):
-
-    def post(self, request, profile_pk, *args, **kwargs):
-        profile = get_object_or_404(Profile, pk=profile_pk)
-        profile.interests.clear()
-        interests = json.loads(request.POST['interests']) or []
-        for interest_id in interests:
-            interest = Interest.objects.get_or_create(id=interest_id)[0]
-            profile.interests.add(interest)
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ToggleProfileOnEvent(APIView):
@@ -63,13 +46,3 @@ class EventsByVisitingView(ListAPIView):
         visited = self.request.GET.get('visited')
         return Event.objects.filter(intent__visited=visited, intent__profile_id=profile_pk)
 
-
-class RecommendedEventsView(ListAPIView):
-    serializer_class = EventSerializer
-
-    def get_queryset(self):
-        profile_pk = int(self.kwargs.get('profile_pk', False))
-        interests = get_object_or_404(Profile, pk=profile_pk).interests.values('id')
-        return Event.objects.annotate(
-            recommendations=Count('tags', filter=Q(tags__in=interests))
-        ).order_by('-recommendations')
