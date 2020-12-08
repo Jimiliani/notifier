@@ -1,7 +1,8 @@
 from django.urls import path
 
-from content.views import ProfileView
+from content.views import ProfileView, EventsView
 
 urlpatterns = [
-    path('profile/', ProfileView.as_view(), name='profile'),
+    path('profiles/', ProfileView.as_view(), name='profile'),
+    path('events/', EventsView.as_view(), name='events'),
 ]

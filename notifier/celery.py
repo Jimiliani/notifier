@@ -19,10 +19,6 @@ app.conf.beat_schedule = {
     'get-and-add-new-events': {
         'task': 'content.tasks.get_and_add_new_events',
         'schedule': crontab(hour='*/4', minute=0)
-    },
-    'send-recommendations': {
-        'task': 'content.tasks.send_recommendations',
-        'schedule': crontab(day_of_week=1,hour=12, minute=0)
     }
 }
 

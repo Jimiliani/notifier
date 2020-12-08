@@ -1,5 +1,6 @@
 import json
 
+from django.core.exceptions import ValidationError
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -19,8 +20,22 @@ class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
     queryset = Profile.objects.all()
     permission_classes = [IsProfileOwnerOrReadOnly, ]
 
+    def get_object(self):
+        if self.action == 'retrieve':
+            pk = self.request.data.get('pk', None)
+        else:
+            pk = self.request.GET.get('pk', None)
+        try:
+            pk = int(pk)
+            return get_object_or_404(Profile, pk=pk)
+        except ValidationError:
+            if pk == 'me':
+                return self.request.user.profile
+            else:
+                raise ValidationError({'pk': ["Invalid 'pk' value"]})
 
-class EventView(GenericViewSet, ListModelMixin, RetrieveModelMixin):
+
+class EventViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     serializer_class = EventSerializer
     queryset = Event.objects.all()
 
@@ -37,7 +52,7 @@ class ToggleProfileOnEvent(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class EventsByVisitingView(ListAPIView):
+class EventsByVisitingList(ListAPIView):
     serializer_class = EventSerializer
     permission_classes = [IsProfileOwner, ]
 
@@ -45,4 +60,3 @@ class EventsByVisitingView(ListAPIView):
         profile_pk = int(self.kwargs.get('profile_pk', False))
         visited = self.request.GET.get('visited')
         return Event.objects.filter(intent__visited=visited, intent__profile_id=profile_pk)
-
