@@ -21,18 +21,15 @@ class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
     permission_classes = [IsProfileOwnerOrReadOnly, ]
 
     def get_object(self):
-        if self.action == 'retrieve':
-            pk = self.request.data.get('pk', None)
-        else:
-            pk = self.request.GET.get('pk', None)
+        pk = self.kwargs.get('profile_pk', None)
         try:
             pk = int(pk)
             return get_object_or_404(Profile, pk=pk)
-        except ValidationError:
+        except ValueError:
             if pk == 'me':
                 return self.request.user.profile
             else:
-                raise ValidationError({'pk': ["Invalid 'pk' value"]})
+                raise ValidationError({'profile_pk': ["Invalid 'pk' value"]})
 
 
 class EventViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):
@@ -57,6 +54,27 @@ class EventsByVisitingList(ListAPIView):
     permission_classes = [IsProfileOwner, ]
 
     def get_queryset(self):
-        profile_pk = int(self.kwargs.get('profile_pk', False))
+        profile_pk = int(self.kwargs.get('pk', False))
         visited = self.request.GET.get('visited')
         return Event.objects.filter(intent__visited=visited, intent__profile_id=profile_pk)
+
+
+class EventsByFriendsList(ListAPIView):
+    serializer_class = EventSerializer
+    permission_classes = [IsProfileOwner, ]
+
+    def get_queryset(self):
+        profile_pk = int(self.kwargs.get('pk', False))
+        profile = get_object_or_404(Profile, id=profile_pk)
+        if profile.vk_id is not None:
+            friends = get_vk_friends(profile.vk_id)
+            events_with_friends_intents = {}
+            for friend in friends:
+                pass
+        else:
+            raise ValidationError({'profile': ["В вашем профиле не указана ссылка на вашу страницу во вконтаке,"
+                                               " поэтому данная функция для вас недоступна"]})
+
+
+def get_vk_friends(vk_id):
+    return list(vk_id)

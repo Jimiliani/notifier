@@ -3,19 +3,18 @@ from django.db import models
 
 
 class Profile(models.Model):
-    MALE = 'M'
-    FEMALE = 'F'
-    OTHER = 'O'
     GENDER_CHOICE = [
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (OTHER, 'Other'),
+        ('M', 'Мужчина'),
+        ('F', 'Женщина'),
+        ('O', 'Другое'),
     ]
     user = models.OneToOneField(User, related_name='profile', verbose_name='Пользователь', on_delete=models.CASCADE)
     gender = models.CharField(choices=GENDER_CHOICE, max_length=2, verbose_name='Пол', null=True, blank=True)
     about = models.TextField(max_length=1000, verbose_name='О пользователе', null=True, blank=True)
-    vk_link = models.CharField(verbose_name='Идентификатор пользователя во вконтакте', null=True, blank=True,
+    vk_link = models.CharField(verbose_name='Ссылка на профиль пользователя во вконтакте', null=True, blank=True,
                                max_length=50)
+    vk_id = models.PositiveIntegerField(verbose_name='id пользователя во вконтакте', null=True, blank=True,
+                                        help_text='Необходимо выставить вручную, если выставляется через админку')
 
     def __str__(self):
         return self.user.username

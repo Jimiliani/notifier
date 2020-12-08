@@ -1,4 +1,9 @@
+import json
+
+import requests
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from content.models import Profile, Event
@@ -17,6 +22,23 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = '__all__'
         depth = 1
+
+    def update(self, instance, validated_data):
+        profile = super(ProfileSerializer, self).update(instance, validated_data)
+        if validated_data.get('vk_link', None) is not None:
+            try:
+                vk_short_name = validated_data.get('vk_link').split('/')[-1]
+            except ValidationError:
+                raise ValidationError({'Ссылка на страницу вк': "Некорректный формат ссылки"})
+            parameters = {
+                'access_token': settings.VK_ACCESS_TOKEN,
+                'user_ids': vk_short_name,
+                'v': settings.VK_API_VERSION
+            }
+            response = requests.get(settings.VK_GET_USER_URL, params=parameters)
+            profile.vk_id = response.json()['response'][0]['id']
+        profile.save()
+        return profile
 
 
 class ProfilePkSerializer(serializers.ModelSerializer):

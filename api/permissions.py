@@ -8,7 +8,9 @@ class IsProfileOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         profile_pk = view.kwargs.get('profile_pk', False)
-        return request.user.profile.pk == profile_pk
+        if profile_pk == 'me':
+            return True
+        return request.user.profile.pk == int(profile_pk)
 
 
 class IsProfileOwner(permissions.BasePermission):
@@ -16,4 +18,6 @@ class IsProfileOwner(permissions.BasePermission):
 
     def has_permission(self, request, view):
         profile_pk = view.kwargs.get('profile_pk', False)
-        return request.user.profile.pk == profile_pk
+        if profile_pk == 'me':
+            return True
+        return request.user.profile.pk == int(profile_pk)
