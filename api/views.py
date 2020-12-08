@@ -1,8 +1,10 @@
 import json
 
+import requests
 from django.core.exceptions import ValidationError
-from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
+from django.conf import settings
+
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
@@ -11,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from content.models import Profile, Event, Intent
+from notifier import settings
 from .permissions import IsProfileOwnerOrReadOnly, IsProfileOwner
 from .serializers import ProfileSerializer, EventSerializer
 
@@ -54,7 +57,7 @@ class EventsByVisitingList(ListAPIView):
     permission_classes = [IsProfileOwner, ]
 
     def get_queryset(self):
-        profile_pk = int(self.kwargs.get('pk', False))
+        profile_pk = int(self.kwargs.get('profile_pk', False))
         visited = self.request.GET.get('visited')
         return Event.objects.filter(intent__visited=visited, intent__profile_id=profile_pk)
 
@@ -63,18 +66,25 @@ class EventsByFriendsList(ListAPIView):
     serializer_class = EventSerializer
     permission_classes = [IsProfileOwner, ]
 
+    def get_vk_friends(self, vk_id):
+        parameters = {
+            'access_token': settings.VK_ACCESS_TOKEN,
+            'user_id': vk_id,
+            'order': 'hints',
+            'v': settings.VK_API_VERSION
+        }
+        response = requests.get(settings.VK_GET_FRIENDS_URL, params=parameters)
+        vk_ids = list(response.json()['response']['items'])
+        profiles = Profile.objects.filter(vk_id__in=vk_ids)
+        return profiles
+
     def get_queryset(self):
-        profile_pk = int(self.kwargs.get('pk', False))
+        profile_pk = int(self.kwargs.get('profile_pk', False))
         profile = get_object_or_404(Profile, id=profile_pk)
         if profile.vk_id is not None:
-            friends = get_vk_friends(profile.vk_id)
-            events_with_friends_intents = {}
-            for friend in friends:
-                pass
+            friends = self.get_vk_friends(profile.vk_id)
+            events_with_friends_intents = Event.objects.filter(going_to_participate__in=friends)
+            return events_with_friends_intents
         else:
             raise ValidationError({'profile': ["В вашем профиле не указана ссылка на вашу страницу во вконтаке,"
                                                " поэтому данная функция для вас недоступна"]})
-
-
-def get_vk_friends(vk_id):
-    return list(vk_id)

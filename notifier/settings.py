@@ -123,7 +123,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = 'events'
-VK_ACCESS_TOKEN = 'f3c07edff3c07edff3c07edfcff3b51e29ff3c0f3c07edfac0fadaea3a8ab49fd1e8129'
+VK_ACCESS_TOKEN = config('VK_TOKEN')
 VK_MY_ID = 290500055
 VK_API_VERSION = '5.126'
 VK_GET_USER_URL = "https://api.vk.com/method/users.get"
