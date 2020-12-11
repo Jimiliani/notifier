@@ -14,11 +14,13 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'send-notifications': {
         'task': 'content.tasks.send_notifications',
-        'schedule': crontab(hour='*/12', minute=0)
+        # 'schedule': crontab(hour='*/12', minute=0)
+        'schedule': crontab(hour='*', minute='*/10')
     },
     'get-and-add-new-events': {
         'task': 'content.tasks.get_and_add_new_events',
-        'schedule': crontab(hour='*/4', minute=0)
+        # 'schedule': crontab(hour='*/4', minute=0)
+        'schedule': crontab(hour='*', minute='*/10')
     }
 }
 

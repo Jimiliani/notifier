@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import ProfileView, EventViewSet, ToggleProfileOnEvent, EventsByVisitingList, EventsByFriendsList
+from .views import ProfileView, EventViewSet, ToggleProfileOnEvent, EventsByVisitingList, EventsByFriendsList, \
+    TestEventsCollector
 
 urlpatterns = [
     path('profiles/<str:profile_pk>', ProfileView.as_view({'get': 'retrieve',
@@ -11,4 +12,6 @@ urlpatterns = [
     path('events/list', EventViewSet.as_view({'get': 'list'}), name='list-events'),
     path('events/<int:profile_pk>/visiting', EventsByVisitingList.as_view(), name='list-events-by-visiting'),
     path('events/<int:profile_pk>/friends', EventsByFriendsList.as_view(), name='list-events-by-visiting'),
+
+    path('test',TestEventsCollector.as_view(),name='collect-events')
 ]

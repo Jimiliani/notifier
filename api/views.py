@@ -17,6 +17,7 @@ from notifier import settings
 from .permissions import IsProfileOwnerOrReadOnly, IsProfileOwner
 from .serializers import ProfileSerializer, EventSerializer
 
+from content.tasks import get_and_add_kudaGo_events
 
 class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
     serializer_class = ProfileSerializer
@@ -88,3 +89,9 @@ class EventsByFriendsList(ListAPIView):
         else:
             raise ValidationError({'profile': ["В вашем профиле не указана ссылка на вашу страницу во вконтаке,"
                                                " поэтому данная функция для вас недоступна"]})
+
+
+class TestEventsCollector(APIView):
+    def get(self, request):
+        get_and_add_kudaGo_events()
+        return Response({'da'})
