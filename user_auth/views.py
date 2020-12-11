@@ -21,11 +21,9 @@ class RegistrationView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            with transaction.atomic():
-                user = User.objects.create_user(username=form.cleaned_data['username'],
-                                                email=form.cleaned_data['email'],
-                                                password=form.cleaned_data['password1'])
-                Profile.objects.create(user=user)
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            email=form.cleaned_data['email'],
+                                            password=form.cleaned_data['password1'])
             send_mail(
                 'Notifier',
                 'Привет {}! Спасибо за регистрацию на нашем сайте!'.format(form.cleaned_data['username']),
