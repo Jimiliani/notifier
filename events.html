@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link href="events.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+  <a class="navbar-brand" href="#">События</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Стартовая страница</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Список событий <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Тип события</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown02">
+          <a class="dropdown-item" href="#">Кино</a>
+          <a class="dropdown-item" href="#">Концерт</a>
+          <a class="dropdown-item" href="#">Фестиваль</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Пользователь</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" href="#">Личный кабинет</a>
+          <a class="dropdown-item" href="#">Выход</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="mt-5">
+  <div class="mr-auto ml-auto">
+    <div class="jumbotron">
+      <div class="container">
+        <h2>Событие 1</h2>
+        <details>
+          <h4>Информация о событии</h4>
+          <p>Информация</p>
+        </details>
+        <h6>Концерт</h6>
+        <a class="btn btn-secondary" href="#" role="button">Пойду!</a>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <div class="container">
+        <h2>Событие 2</h2>
+        <details>
+          <h4>Информация о событии</h4>
+          <p>Информация</p>
+        </details>
+        <h6>Кино</h6>
+        <a class="btn btn-secondary" href="#" role="button">Пойду!</a>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

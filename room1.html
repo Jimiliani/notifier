@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat room</title>
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link href="room1.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Стартовая страница</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Список событий </a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Пользователь</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" href="#">Личный кабинет</a>
+          <a class="dropdown-item" href="#">Выход</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="mr-auto ml-auto">
+  <div class="jumbotron">
+    <div class="container">
+      <textarea id="chat-log" class="mr-auto ml-auto" class="fixed-top" cols="150" rows="14"></textarea><br>
+      <input id="chat-message-input" type="text" size="100" placeholder="Введите сообщение"><br>
+      <input id="chat-message-submit" type="button" class="btn btn-outline-light" value="Отправить">
+      <script>
+          const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+          const chatSocket = new WebSocket(
+              'ws://'
+              + window.location.host
+              + '/ws/chat/'
+              + roomName
+              + '/'
+          );
+
+          chatSocket.onmessage = function(e) {
+              const data = JSON.parse(e.data);
+              document.querySelector('#chat-log').value += (data.message + '\n');
+          };
+
+          chatSocket.onclose = function(e) {
+              console.error('Chat socket closed unexpectedly');
+          };
+
+          document.querySelector('#chat-message-input').focus();
+          document.querySelector('#chat-message-input').onkeyup = function(e) {
+              if (e.keyCode === 13) {  // enter, return
+                  document.querySelector('#chat-message-submit').click();
+              }
+          };
+
+          document.querySelector('#chat-message-submit').onclick = function(e) {
+              const messageInputDom = document.querySelector('#chat-message-input');
+              const message = messageInputDom.value;
+              chatSocket.send(JSON.stringify({
+                  'message': message
+              }));
+              messageInputDom.value = '';
+          };
+      </script>
+</div>
+</html>
