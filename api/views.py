@@ -19,6 +19,7 @@ from .serializers import ProfileSerializer, EventSerializer
 
 from content.tasks import get_and_add_kudaGo_events
 
+
 class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
@@ -91,7 +92,12 @@ class EventsByFriendsList(ListAPIView):
                                                " поэтому данная функция для вас недоступна"]})
 
 
-class TestEventsCollector(APIView):
+class ToggleIntent(APIView):
     def get(self, request):
-        get_and_add_kudaGo_events()
-        return Response({'da'})
+        event_id = int(request.GET.get('event_id'))
+        profile_id = int(request.user.profile.id)
+        if Intent.objects.filter(event_id=event_id, profile_id=profile_id).exists():
+            Intent.objects.filter(event_id=event_id, profile_id=profile_id).get().delete()
+        else:
+            Intent.objects.create(event_id=event_id, profile_id=profile_id)
+        return Response(status=status.HTTP_200_OK)

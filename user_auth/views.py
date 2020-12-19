@@ -3,11 +3,18 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 from content.models import Profile
 from user_auth.forms import RegistrationForm
 from notifier.settings import EMAIL_HOST_USER
 
+
+@login_required(login_url='/auth/login/')
+def logout_view(request):
+    logout(request)
+    return redirect('/auth/login')
 
 
 class RegistrationView(View):

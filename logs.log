@@ -1,0 +1,97 @@
+2020-12-11 11:29:52,244 - celery.utils.dispatch.signal - ERROR - Signal handler <function setup_loggers at 0x7fbb162731f0> raised: gaierror(-8, 'Servname not supported for ai_socktype')
+Traceback (most recent call last):
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/celery/utils/dispatch/signal.py", line 288, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/home/dima/PycharmProjects/notifier/notifier/celery.py", line 28, in setup_loggers
+    slh = logging.handlers.SysLogHandler(address=('logsN.papertrailapp.com', '...'))
+  File "/usr/lib/python3.8/logging/handlers.py", line 829, in __init__
+    ress = socket.getaddrinfo(host, port, 0, socktype)
+  File "/usr/lib/python3.8/socket.py", line 914, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -8] Servname not supported for ai_socktype
+2020-12-11 11:29:52,765 - celery.worker.consumer.connection - INFO - Connected to redis://127.0.0.1:6379/0
+2020-12-11 11:29:52,774 - celery.worker.consumer.mingle - INFO - mingle: searching for neighbors
+2020-12-11 11:29:53,790 - celery.worker.consumer.mingle - INFO - mingle: all alone
+2020-12-11 11:29:53,797 - celery.redirected - WARNING - /home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/celery/fixups/django.py:200: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
+  warnings.warn('Using settings.DEBUG leads to a memory leak, never '
+2020-12-11 11:29:53,797 - celery.apps.worker - INFO - celery@dima-Lenovo-IdeaPad-S340-14IWL ready.
+2020-12-11 11:29:55,764 - celery.utils.dispatch.signal - ERROR - Signal handler <function setup_loggers at 0x7f9c937771f0> raised: gaierror(-8, 'Servname not supported for ai_socktype')
+Traceback (most recent call last):
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/celery/utils/dispatch/signal.py", line 288, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/home/dima/PycharmProjects/notifier/notifier/celery.py", line 28, in setup_loggers
+    slh = logging.handlers.SysLogHandler(address=('logsN.papertrailapp.com', '...'))
+  File "/usr/lib/python3.8/logging/handlers.py", line 829, in __init__
+    ress = socket.getaddrinfo(host, port, 0, socktype)
+  File "/usr/lib/python3.8/socket.py", line 914, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -8] Servname not supported for ai_socktype
+2020-12-11 11:29:55,765 - celery.beat - INFO - beat: Starting...
+2020-12-11 11:29:55,776 - celery.beat - INFO - Scheduler: Sending due task send-notifications (content.tasks.send_notifications)
+2020-12-11 11:29:55,786 - celery.worker.strategy - INFO - Received task: content.tasks.send_notifications[078ce257-fd3d-403a-9eb2-08fa418c2c63]  
+2020-12-11 11:29:55,787 - celery.beat - INFO - Scheduler: Sending due task get-and-add-new-events (content.tasks.get_and_add_new_events)
+2020-12-11 11:29:55,788 - celery.redirected - WARNING - notifications successfully sent
+2020-12-11 11:29:55,788 - celery.app.trace - INFO - Task content.tasks.send_notifications[078ce257-fd3d-403a-9eb2-08fa418c2c63] succeeded in 0.0005469960160553455s: None
+2020-12-11 11:29:55,788 - celery.worker.strategy - INFO - Received task: content.tasks.get_and_add_new_events[60c65da5-d9cb-4cde-9059-2a4299604f47]  
+2020-12-11 11:29:55,789 - celery.redirected - WARNING - msk
+2020-12-11 11:29:58,916 - celery.app.trace - ERROR - Task content.tasks.get_and_add_new_events[60c65da5-d9cb-4cde-9059-2a4299604f47] raised unexpected: AttributeError("'LoggingProxy' object has no attribute 'fileno'")
+Traceback (most recent call last):
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/celery/app/trace.py", line 382, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/celery/app/trace.py", line 641, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 24, in get_and_add_new_events
+    get_and_add_kudaGo_events()
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 98, in get_and_add_kudaGo_events
+    events = get_kudaGo_events()
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 89, in get_kudaGo_events
+    events = events + get_kudaGo_events_in_city(city)
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 39, in get_kudaGo_events_in_city
+    events.append(correct_data(i))
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 74, in correct_data
+    image_filename = wget.download(image, MEDIA_ROOT + '/events/')
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 526, in download
+    (tmpfile, headers) = ulib.urlretrieve(binurl, tmpfile, callback)
+  File "/usr/lib/python3.8/urllib/request.py", line 273, in urlretrieve
+    reporthook(blocknum, bs, size)
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 513, in callback_charged
+    callback_progress(blocks, block_size, total_size, bar_function=bar)
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 461, in callback_progress
+    width = min(100, get_console_width())
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 337, in get_console_width
+    ioctl(sys.stdout.fileno(), TIOCGWINSZ, winsize)
+AttributeError: 'LoggingProxy' object has no attribute 'fileno'
+2020-12-11 11:30:00,000 - celery.beat - INFO - Scheduler: Sending due task get-and-add-new-events (content.tasks.get_and_add_new_events)
+2020-12-11 11:30:00,005 - celery.beat - INFO - Scheduler: Sending due task send-notifications (content.tasks.send_notifications)
+2020-12-11 11:30:00,006 - celery.worker.strategy - INFO - Received task: content.tasks.get_and_add_new_events[e5a0ebc5-058a-4a29-8db0-30ac18bf3e55]  
+2020-12-11 11:30:00,010 - celery.worker.strategy - INFO - Received task: content.tasks.send_notifications[c7c45a71-fd97-4515-b72d-5b3d25a296bd]  
+2020-12-11 11:30:00,009 - celery.redirected - WARNING - msk
+2020-12-11 11:30:00,012 - celery.redirected - WARNING - notifications successfully sent
+2020-12-11 11:30:00,014 - celery.app.trace - INFO - Task content.tasks.send_notifications[c7c45a71-fd97-4515-b72d-5b3d25a296bd] succeeded in 0.0017130379856098443s: None
+2020-12-11 11:30:02,869 - celery.app.trace - ERROR - Task content.tasks.get_and_add_new_events[e5a0ebc5-058a-4a29-8db0-30ac18bf3e55] raised unexpected: AttributeError("'LoggingProxy' object has no attribute 'fileno'")
+Traceback (most recent call last):
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/celery/app/trace.py", line 382, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/celery/app/trace.py", line 641, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 24, in get_and_add_new_events
+    get_and_add_kudaGo_events()
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 98, in get_and_add_kudaGo_events
+    events = get_kudaGo_events()
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 89, in get_kudaGo_events
+    events = events + get_kudaGo_events_in_city(city)
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 39, in get_kudaGo_events_in_city
+    events.append(correct_data(i))
+  File "/home/dima/PycharmProjects/notifier/content/tasks.py", line 74, in correct_data
+    image_filename = wget.download(image, MEDIA_ROOT + '/events/')
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 526, in download
+    (tmpfile, headers) = ulib.urlretrieve(binurl, tmpfile, callback)
+  File "/usr/lib/python3.8/urllib/request.py", line 273, in urlretrieve
+    reporthook(blocknum, bs, size)
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 513, in callback_charged
+    callback_progress(blocks, block_size, total_size, bar_function=bar)
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 461, in callback_progress
+    width = min(100, get_console_width())
+  File "/home/dima/PycharmProjects/notifier/venv/lib/python3.8/site-packages/wget.py", line 337, in get_console_width
+    ioctl(sys.stdout.fileno(), TIOCGWINSZ, winsize)
+AttributeError: 'LoggingProxy' object has no attribute 'fileno'

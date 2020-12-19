@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
@@ -20,17 +22,14 @@ def get_random_string():
     return result_str
 
 
-def index(request):
-    return render(request, 'chats/index.html', {})
-
-
 # план такой: сюда приходит запрос, если уже кто-то ждет того, чтобы начать общение, то создаем прям тут чат и
 # редиректим пользователя, а если никто пока не ждет, то сами встаем в очередь, а в другой вьюшке уже с time.sleep()
 # будем ждать того, чтобы кто-то появился
 
 
-class PendingView(View):
-    template_name = 'chats/waiting.html'
+class PendingView(LoginRequiredMixin, View):
+    template_name = 'chats/wait_for_connection.html'
+    login_url = '/auth/login'
 
     def get(self, request, event_pk, *args, **kwargs):
         event = get_object_or_404(Event, id=event_pk)
@@ -53,6 +52,7 @@ class PendingView(View):
         return HttpResponse("")
 
 
+@login_required(login_url='/auth/login/')
 def waiting_for_entering_chat(request, event_pk):
     event = get_object_or_404(Event, id=event_pk)
     current_user_profile = request.user.profile
@@ -65,6 +65,7 @@ def waiting_for_entering_chat(request, event_pk):
     return JsonResponse({'success': False})
 
 
+@login_required(login_url='/auth/login/')
 def room(request, event_pk, room_name):
     event = get_object_or_404(Event, id=event_pk)
     one_to_one_room = get_object_or_404(OneToOneRoom, room_name=room_name, event=event)

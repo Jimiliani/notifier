@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>События</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <style>
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: rgb(43, 43, 52);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #000;
+            font-size: 42px;
+        }
+
+        p {
+            color: rgb(43, 43, 52);
+            font-size: 21px;
+        }
+
+        nav {
+            background-color: rgb(21, 21, 30);
+        }
+
+        .card-horizontal {
+            display: flex;
+            flex: 1 1 auto;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'main' %}">Стартовая страница</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'events' %}">Список событий </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Пользователь</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="{% url 'profile' pk=user.profile.pk %}">Личный кабинет</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Выход</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container" style=" display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center;">
+    <div class="mt-5 ml-auto mr-auto flex-row p-3" style="background-color: whitesmoke; min-width: 80%">
+        <div style="text-align: center">
+            <img src="{{ event.image.url }}" style="max-width: 80%; max-height: 80%" alt="Иди нахер">
+        </div>
+        <div class="flex-row">
+            <h3><b>{{ event.name }}</b></h3>
+            {% if event.description %}
+                <p><b>Описание события:</b> {{ event.description }}</p>
+            {% endif %}
+            {% if event.date %}
+                <p><b>Дата проведения:</b> {{ event.date }}</p>
+            {% endif %}
+            {% if event.place %}
+                <p><b>Место проведения:</b> {{ event.place }}</p>
+            {% endif %}
+            {% if event.genres %}
+                <p><b>Жанры:</b> {{ event.genres }}</p>
+            {% endif %}
+            <div style="flex-direction: row">
+                {% if is_user_going_to_participate %}
+                    <button type="button" value="off" id="going_to_participate" class="btn btn-outline-dark"
+                            style="float: left"
+                            onclick="toggleIntent({{ event.id }})">Не собираюсь учавствовать!
+                    </button>
+                {% else %}
+                    <button type="button" value="on" id="going_to_participate" class="btn btn-outline-dark"
+                            style="float: left"
+                            onclick="toggleIntent({{ event.id }})">Собираюсь учавствовать!
+                    </button>
+                {% endif %}
+                <button type="button" class="btn btn-outline-dark" style="float: right"
+                onclick="window.location.href='{% url 'pending' event_pk=event.id %}'">
+                    Найти компанию для этого события
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function toggleIntent(id) {
+        $.ajax({
+            url: "../api/intent",
+            type: "GET",
+            data: {
+                event_id: id
+            },
+            dataType: 'json',
+            complete: function (){
+                let button = $('#going_to_participate');
+                let value = button.attr('value');
+                if (value == 'on'){
+                    button.attr('value','off');
+                    button.text('Не собираюсь учавствовать!');
+                } else {
+                    button.attr('value','on');
+                    button.text('Собираюсь учавствовать!');
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

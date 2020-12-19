@@ -3,12 +3,11 @@ from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetVie
 
 from django.urls import path
 
-from user_auth.views import RegistrationView
-
+from user_auth.views import RegistrationView, logout_view
 
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='user_auth/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(template_name='user_auth/logout.html'), name='logout'),
+    path('logout/', logout_view, name='logout'),
     path('registration/', RegistrationView.as_view(), name='registration'),
     # path('password_reset/', PasswordResetView.as_view(
     #     template_name='user_auth/password_reset.html',

@@ -1,10 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Профиль</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Space</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <style>
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: rgb(43, 43, 52);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #000;
+            font-size: 42px;
+        }
+
+        p {
+            color: rgb(43, 43, 52);
+            font-size: 21px;
+        }
+
+        nav {
+            background-color: rgb(21, 21, 30);
+        }
+
+        .card-horizontal {
+            display: flex;
+            flex: 1 1 auto;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'main' %}">Стартовая страница</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'events' %}">Список событий </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Пользователь</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="{% url 'profile' pk=user.profile.pk %}">Личный кабинет</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Выход</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-5 mr-auto ml-auto">
+    <div class="jumbotron">
+        <div class="container">
+            <h2>Личный кабинет</h2>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th scope="row">Никнейм</th>
+                    <td>{{ profile.user.username }}</td>
+                </tr>
+                {% if profile.user.first_name %}
+                    <tr>
+                        <th scope="row">Имя</th>
+                        <td>{{ profile.user.first_name }}</td>
+                    </tr>
+                {% endif %}
+                {% if profile.user.last_name %}
+                    <tr>
+                        <th scope="row">Фамилия</th>
+                        <td>{{ profile.user.last_name }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th scope="row">Пол</th>
+                    <td>{{ profile.get_gender_display }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">О пользователе</th>
+                    <td>{{ profile.about }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>
