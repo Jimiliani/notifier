@@ -62,6 +62,9 @@
             <li class="nav-item ">
                 <a class="nav-link" href="{% url 'events' %}">Список событий </a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'friends-events' %}">События друзей </a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">Пользователь</a>
@@ -94,6 +97,14 @@
             {% if event.genres %}
                 <p><b>Жанры:</b> {{ event.genres }}</p>
             {% endif %}
+            {% if friends_going_to_participate %}
+                <div class="mb-3">
+                <h4>Ваши друзья собираются участвовать:</h4>
+                {% for friend in friends_going_to_participate %}
+                    <a href="{{ friend.vk_link }}">{{ friend.vk_link }}</a>
+                {% endfor %}
+            {% endif %}
+            </div>
             <div style="flex-direction: row">
                 {% if is_user_going_to_participate %}
                     <button type="button" value="off" id="going_to_participate" class="btn btn-outline-dark"
@@ -107,7 +118,7 @@
                     </button>
                 {% endif %}
                 <button type="button" class="btn btn-outline-dark" style="float: right"
-                onclick="window.location.href='{% url 'pending' event_pk=event.id %}'">
+                        onclick="window.location.href='{% url 'pending' event_pk=event.id %}'">
                     Найти компанию для этого события
                 </button>
             </div>
@@ -123,14 +134,14 @@
                 event_id: id
             },
             dataType: 'json',
-            complete: function (){
+            complete: function () {
                 let button = $('#going_to_participate');
                 let value = button.attr('value');
-                if (value == 'on'){
-                    button.attr('value','off');
+                if (value == 'on') {
+                    button.attr('value', 'off');
                     button.text('Не собираюсь учавствовать!');
                 } else {
-                    button.attr('value','on');
+                    button.attr('value', 'on');
                     button.text('Собираюсь учавствовать!');
                 }
             }

@@ -96,8 +96,11 @@ class EventsByFriendsList(ListAPIView):
         profile_pk = int(self.kwargs.get('profile_pk', False))
         profile = get_object_or_404(Profile, id=profile_pk)
         if profile.vk_id is not None:
-            friends = self.get_vk_friends(profile.vk_id)
-            events_with_friends_intents = Event.objects.filter(going_to_participate__in=friends)
+            try:
+                friends = self.get_vk_friends(profile.vk_id)
+                events_with_friends_intents = Event.objects.filter(going_to_participate__in=friends)
+            except Exception:
+                events_with_friends_intents = Event.objects.all()
             return events_with_friends_intents
         else:
             raise ValidationError({'profile': ["В вашем профиле не указана ссылка на вашу страницу во вконтаке,"

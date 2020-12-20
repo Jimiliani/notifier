@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Space</title>
+    <title>События</title>
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -78,44 +77,23 @@
         </ul>
     </div>
 </nav>
-<div class="container mt-5 mr-auto ml-auto">
-    <div class="jumbotron">
-        <div class="container">
-            <h2>Настройки</h2>
-            <form id="profile-form" method="POST" action="api/profiles/{{ user.profile.pk }}">
-                {% csrf_token %}
-                <label> Имя:
-                    <input type="text" name="first_name" value="{{ user.first_name }}">
-                </label>
-                <br>
-                <label> Фамилия:
-                    <input type="text" name="last_name" value="{{ user.last_name }}">
-                </label>
-                <br>
-                <label>Гендер:
-                    <label> Мужской
-                        <input name="gender" value="M" type="radio"
-                                {% if user.profile.gender == 'M' %} checked {% endif %}>
-                    </label>
-                    <label> Женский
-                        <input name="gender" value="W" type="radio"
-                                {% if user.profile.gender == 'W' %} checked {% endif %}>
-                    </label>
-                    <label> Другое
-                        <input name="gender" value="O" type="radio"
-                                {% if user.profile.gender == 'O' %} checked {% endif %}>
-                    </label>
-                </label>
-                <br>
-                <label> О пользователе:
-                    <input type="text" name="about" value="{{ user.profile.about }}">
-                </label>
-                <br>
-                <label> Сыылка на вашу страницу вконтакте:
-                    <input type="text" name="vk_link" value="{{ user.profile.vk_link }}">
-                </label>
-            </form>
-            <button class="btn btn-dark" type="submit" form="profile-form">Сохранить</button>
+<div class="container">
+    <div class="mt-5 ml-auto mr-auto">
+        <div class="mr-auto ml-auto">
+            {% if not error %}
+                {% for event in events %}
+                    <div class="card flex-row  mb-5">
+                        <img src="{{ event.image.url }}" class="mr-3" style="width: 360px; height:240px" alt=""
+                             onclick="window.location.href='{% url 'retrieve-event' pk=event.id %}'">
+                        <div class="card-block mt-3 mb-3 mr-2">
+                            <h4 class="card-title">{{ event.name }}</h4>
+                            <p class="card-text">{{ event.description|truncatechars:260 }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                <p style="color: whitesmoke">{{ error }}</p>
+            {% endif %}
         </div>
     </div>
 </div>

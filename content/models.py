@@ -21,8 +21,8 @@ class Profile(models.Model):
 
 
 class Intent(models.Model):
-    event = models.OneToOneField('Event', related_name='intent', on_delete=models.CASCADE, verbose_name='Событие')
-    profile = models.OneToOneField('Profile', related_name='intent', on_delete=models.CASCADE, verbose_name='Профиль')
+    event = models.ForeignKey('Event', related_name='intent', on_delete=models.CASCADE, verbose_name='Событие')
+    profile = models.ForeignKey('Profile', related_name='intent', on_delete=models.CASCADE, verbose_name='Профиль')
     visited = models.BooleanField(default=False, verbose_name='Уже посещено')
 
     def __str__(self):
