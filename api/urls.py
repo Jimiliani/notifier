@@ -5,7 +5,7 @@ from .views import ProfileView, EventViewSet, ToggleProfileOnEvent, EventsByVisi
 
 urlpatterns = [
     path('profiles/<str:profile_pk>', ProfileView.as_view({'get': 'retrieve',
-                                                           'put': 'update'}), name='retrieve-update-profile'),
+                                                           'post': 'update'}), name='retrieve-update-profile'),
     path('events/<int:pk>', EventViewSet.as_view({'get': 'retrieve'}), name='retrieve-event'),
     path('events/<int:event_pk>/toggle_profile/<int:profile_pk>', ToggleProfileOnEvent.as_view(),
          name='toggle-profile'),

@@ -2,7 +2,7 @@ import json
 
 import requests
 from django.core.exceptions import ValidationError
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.conf import settings
 
 from rest_framework import status
@@ -35,6 +35,18 @@ class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
                 return self.request.user.profile
             else:
                 raise ValidationError({'profile_pk': ["Invalid 'pk' value"]})
+
+    def update(self, request, *args, **kwargs):
+        profile = request.user.profile
+        profile.user.first_name = request.POST.get('first_name', profile.user.first_name)
+        profile.user.last_name = request.POST.get('last_name', profile.user.last_name)
+        profile_serializer = self.serializer_class(instance=profile, data=request.data)
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            profile.user.save()
+            return redirect('profile', pk=self.kwargs.get('profile_pk'))
+        else:
+            return Response(profile.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EventViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):

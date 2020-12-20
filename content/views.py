@@ -14,6 +14,14 @@ class ProfileView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'profile': profile})
 
 
+class SettingsView(LoginRequiredMixin, View):
+    template_name = 'content/settings.html'
+    login_url = '/auth/login'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+
 class EventsView(LoginRequiredMixin, View):
     template_name = 'content/events.html'
     login_url = '/auth/login'

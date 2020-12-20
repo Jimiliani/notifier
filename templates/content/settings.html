@@ -78,35 +78,41 @@
 <div class="container mt-5 mr-auto ml-auto">
     <div class="jumbotron">
         <div class="container">
-            <h2>Личный кабинет</h2>
-            <table class="table table-striped">
-                <tbody>
-                <tr>
-                    <th scope="row">Никнейм</th>
-                    <td>{{ profile.user.username }}</td>
-                </tr>
-                {% if profile.user.first_name %}
-                    <tr>
-                        <th scope="row">Имя</th>
-                        <td>{{ profile.user.first_name }}</td>
-                    </tr>
-                {% endif %}
-                {% if profile.user.last_name %}
-                    <tr>
-                        <th scope="row">Фамилия</th>
-                        <td>{{ profile.user.last_name }}</td>
-                    </tr>
-                {% endif %}
-                <tr>
-                    <th scope="row">Пол</th>
-                    <td>{{ profile.get_gender_display }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">О пользователе</th>
-                    <td>{{ profile.about }}</td>
-                </tr>
-                </tbody>
-            </table>
+            <h2>Настройки</h2>
+            <form id="profile-form" method="POST" action="api/profiles/{{ user.profile.pk }}">
+                {% csrf_token %}
+                <label> Имя:
+                    <input type="text" name="first_name" value="{{ user.first_name }}">
+                </label>
+                <br>
+                <label> Фамилия:
+                    <input type="text" name="last_name" value="{{ user.last_name }}">
+                </label>
+                <br>
+                <label>Гендер:
+                    <label> Мужской
+                        <input name="gender" value="M" type="radio"
+                                {% if user.profile.gender == 'M' %} checked {% endif %}>
+                    </label>
+                    <label> Женский
+                        <input name="gender" value="W" type="radio"
+                                {% if user.profile.gender == 'W' %} checked {% endif %}>
+                    </label>
+                    <label> Другое
+                        <input name="gender" value="O" type="radio"
+                                {% if user.profile.gender == 'O' %} checked {% endif %}>
+                    </label>
+                </label>
+                <br>
+                <label> О пользователе:
+                    <input type="text" name="about" value="{{ user.profile.about }}">
+                </label>
+                <br>
+                <label> Сыылка на вашу страницу вконтакте:
+                    <input type="text" name="vk_link" value="{{ user.profile.vk_link }}">
+                </label>
+            </form>
+            <button class="btn btn-dark" type="submit" form="profile-form">Сохранить</button>
         </div>
     </div>
 </div>
