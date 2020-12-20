@@ -4,6 +4,7 @@ import requests
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect
 from django.conf import settings
+from django.http import JsonResponse
 
 from rest_framework import status
 from rest_framework.generics import ListAPIView
@@ -37,14 +38,18 @@ class ProfileView(GenericViewSet, RetrieveModelMixin, UpdateModelMixin):
                 raise ValidationError({'profile_pk': ["Invalid 'pk' value"]})
 
     def update(self, request, *args, **kwargs):
+        print(request.data)
         profile = request.user.profile
         profile.user.first_name = request.POST.get('first_name', profile.user.first_name)
         profile.user.last_name = request.POST.get('last_name', profile.user.last_name)
         profile_serializer = self.serializer_class(instance=profile, data=request.data)
         if profile_serializer.is_valid():
-            profile_serializer.save()
-            profile.user.save()
-            return redirect('profile', pk=self.kwargs.get('profile_pk'))
+            try:
+                profile_serializer.save()
+                profile.user.save()
+                return Response(status=status.HTTP_200_OK)
+            except ValidationError:
+                return Response({'Ссылка на страницу вк':'Некорретный формат ссылки вконтакте'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(profile.errors, status=status.HTTP_400_BAD_REQUEST)
 

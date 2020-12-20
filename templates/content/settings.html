@@ -11,6 +11,9 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+            integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn"
+            crossorigin="anonymous"></script>
     <style>
         body {
             display: -ms-flexbox;
@@ -85,14 +88,14 @@
             <form id="profile-form" method="POST" action="api/profiles/{{ user.profile.pk }}">
                 {% csrf_token %}
                 <label> Имя:
-                    <input type="text" name="first_name" value="{{ user.first_name }}">
+                    <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}">
                 </label>
                 <br>
                 <label> Фамилия:
-                    <input type="text" name="last_name" value="{{ user.last_name }}">
+                    <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}">
                 </label>
                 <br>
-                <label>Гендер:
+                <label id="gender">Гендер:
                     <label> Мужской
                         <input name="gender" value="M" type="radio"
                                 {% if user.profile.gender == 'M' %} checked {% endif %}>
@@ -105,19 +108,57 @@
                         <input name="gender" value="O" type="radio"
                                 {% if user.profile.gender == 'O' %} checked {% endif %}>
                     </label>
+                    <label> Не указан
+                        <input name="gender" value="N" type="radio"
+                                {% if user.profile.gender == 'N' %} checked {% endif %}>
+                    </label>
                 </label>
                 <br>
                 <label> О пользователе:
-                    <input type="text" name="about" value="{{ user.profile.about }}">
+                    <input type="text" name="about" id="about" value="{{ user.profile.about }}">
                 </label>
                 <br>
                 <label> Сыылка на вашу страницу вконтакте:
-                    <input type="text" name="vk_link" value="{{ user.profile.vk_link }}">
+                    <input type="text" name="vk_link" id="vk_link" value="{{ user.profile.vk_link }}">
                 </label>
             </form>
-            <button class="btn btn-dark" type="submit" form="profile-form">Сохранить</button>
+            <button class="btn btn-dark" type="submit" onclick="sendForm()">Сохранить</button>
+            <p id="errors"></p>
         </div>
     </div>
 </div>
+<script>
+    function sendForm() {
+        let url = '{% url "retrieve-update-profile" profile_pk=user.profile.pk %}';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                first_name: $('#first_name').val(),
+                last_name: $('#last_name').val(),
+                gender: $('#gender input:checked').val(),
+                about: $('#about').val(),
+                vk_link: $('#vk_link').val(),
+            },
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            },
+            success: function (data) {
+                console.log(data);
+                console.log('success');
+                window.location.href = '{% url 'profile' pk=user.profile.pk %}'
+            },
+            error: function (data) {
+                console.log('error');
+                let error = ""
+                let response = JSON.parse(data.responseText)
+                for (key of Object.keys(response)) {
+                    error = key.toString() + ': ' + response[key].toString() + '\n';
+                }
+                $('#errors').html(error);
+            }
+        });
+    }
+</script>
 </body>
 </html>

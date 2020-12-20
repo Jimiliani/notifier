@@ -25,18 +25,18 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         profile = super(ProfileSerializer, self).update(instance, validated_data)
-        if validated_data.get('vk_link', None) is not None:
+        if validated_data.get('vk_link', '') is not '':
             try:
                 vk_short_name = validated_data.get('vk_link').split('/')[-1]
-            except ValidationError:
+                parameters = {
+                    'access_token': settings.VK_ACCESS_TOKEN,
+                    'user_ids': vk_short_name,
+                    'v': settings.VK_API_VERSION
+                }
+                response = requests.get(settings.VK_GET_USER_URL, params=parameters)
+                profile.vk_id = response.json()['response'][0]['id']
+            except Exception:
                 raise ValidationError({'Ссылка на страницу вк': "Некорректный формат ссылки"})
-            parameters = {
-                'access_token': settings.VK_ACCESS_TOKEN,
-                'user_ids': vk_short_name,
-                'v': settings.VK_API_VERSION
-            }
-            response = requests.get(settings.VK_GET_USER_URL, params=parameters)
-            profile.vk_id = response.json()['response'][0]['id']
         profile.save()
         return profile
 
