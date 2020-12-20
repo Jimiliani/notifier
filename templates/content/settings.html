@@ -88,11 +88,13 @@
             <form id="profile-form" method="POST" action="api/profiles/{{ user.profile.pk }}">
                 {% csrf_token %}
                 <label> Имя:
-                    <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}">
+                    <input type="text" name="first_name" id="first_name"
+                           value="{% if user.first_name %}{{ user.first_name }}{% endif %}">
                 </label>
                 <br>
                 <label> Фамилия:
-                    <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}">
+                    <input type="text" name="last_name" id="last_name"
+                           value="{% if user.last_name %}{{ user.last_name }}{% endif %}">
                 </label>
                 <br>
                 <label id="gender">Гендер:
@@ -115,11 +117,13 @@
                 </label>
                 <br>
                 <label> О пользователе:
-                    <input type="text" name="about" id="about" value="{{ user.profile.about }}">
+                    <input type="text" name="about" id="about"
+                           value="{% if user.profile.about %}{{ user.profile.about }}{% endif %}">
                 </label>
                 <br>
                 <label> Сыылка на вашу страницу вконтакте:
-                    <input type="text" name="vk_link" id="vk_link" value="{{ user.profile.vk_link }}">
+                    <input type="text" name="vk_link" id="vk_link"
+                           value="{% if user.profile.vk_link %}{{ user.profile.vk_link }}{% endif %}">
                 </label>
             </form>
             <button class="btn btn-dark" type="submit" onclick="sendForm()">Сохранить</button>

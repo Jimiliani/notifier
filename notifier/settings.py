@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG = False
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
+ALLOWED_HOSTS = ['127.0.0.1','localhost', 'notifier.life', '167.71.43.6']
 
 # Application definition
 
