@@ -144,44 +144,44 @@
             </button>
         </div>
         <div class="card-columns col-md-6 align-self-center mt-4">
-            <div class="card bg-dark ml-2" style="margin-top: 128px; display: none">
-                <img class="card-img border-0" src="../../media/main/white.jpg" alt="Card image">
+            <div class="card bg-dark ml-2" style="margin-top: 128px; width: 222px; height: 222px">
+                <img class="card-img border-0" src="../../media/main/theatre.jpg" alt="Card image">
                 <div class="card-img-overlay">
                     {#                    <p class="card-text white-text">Театр</p>#}
                 </div>
             </div>
-            <div class="card bg-dark mt-2 ml-2" style="display: none">
-                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+            <div class="card bg-dark mt-2 ml-2" style="width: 222px; height: 222px">
+                <img class="card-img" src="../../media/main/concert.jpg" alt="Card image">
                 <div class="card-img-overlay">
                     {#                    <p class="card-text">Театр</p>#}
                 </div>
             </div>
-            <div class="card bg-dark ml-2" style="display: none">
-                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+            <div class="card bg-dark ml-2" style="width: 222px; height: 222px">
+                <img class="card-img" src="../../media/main/excursions.jpg" alt="Card image">
                 <div class="card-img-overlay">
                     {#                    <p class="card-text">Театр</p>#}
                 </div>
             </div>
-            <div class="card bg-dark mt-2 ml-2" style="display: none">
-                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+            <div class="card bg-dark mt-2 ml-2" style="width: 222px; height: 222px">
+                <img class="card-img" src="../../media/main/public_events.jpg" alt="Card image">
                 <div class="card-img-overlay">
                     {#                    <p class="card-text">Театр</p>#}
                 </div>
             </div>
-            <div class="card bg-dark mt-2 ml-2" style="display: none">
-                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+            <div class="card bg-dark mt-2 ml-2" style="width: 222px; height: 222px">
+                <img class="card-img" src="../../media/main/cinema.jpg" alt="Card image">
                 <div class="card-img-overlay">
                     {#                    <p class="card-text">Театр</p>#}
                 </div>
             </div>
-            <div class="card bg-dark mt-4 ml-2" style="display: none">
-                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+            <div class="card bg-dark mt-4 ml-2" style="width: 222px; height: 222px">
+                <img class="card-img" src="../../media/main/herota.jpg" alt="Card image">
                 <div class="card-img-overlay">
                     {#                    <p class="card-text">Театр</p>#}
                 </div>
             </div>
-            <div class="card bg-dark mt-2 ml-2" style="display: none">
-                <img class="card-img" src="../../media/main/white.jpg" alt="Card image">
+            <div class="card bg-dark mt-2 ml-2" style="width: 222px; height: 222px">
+                <img class="card-img" src="../../media/main/island.jpeg" alt="Card image">
                 <div class="card-img-overlay">
                     {#                    <p class="card-text">Театр</p>#}
                 </div>
@@ -189,24 +189,7 @@
         </div>
     </div>
     {% block scripts %}
-        <script>
-            function fadeInCard(card) {
-                console.log(card);
-                card.fadeIn();
-            }
 
-            function getRandomInt(max) {
-                return Math.floor(Math.random() * Math.floor(max));
-            }
-
-            $(window).on('load', function () {
-                $('.card').each(function () {
-                    let num = getRandomInt(1000)
-                    console.log(num)
-                    setTimeout(() => fadeInCard($(this)), num)
-                })
-            })
-        </script>
     {% endblock %}
     </body>
 {% endblock %}

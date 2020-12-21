@@ -20,7 +20,7 @@ app.conf.beat_schedule = {
     'get-and-add-new-events': {
         'task': 'content.tasks.get_and_add_new_events',
         # 'schedule': crontab(hour='*/4', minute=0)
-        'schedule': crontab(hour='*', minute='*/10')
+        'schedule': crontab(hour='0', minute='0')
     }
 }
 

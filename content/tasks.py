@@ -13,20 +13,27 @@ from bs4 import BeautifulSoup
 from celery import shared_task
 
 from content.models import Event
-from notifier.settings import MEDIA_ROOT
+from notifier.settings import MEDIA_ROOT, EMAIL_HOST_USER
 from django.core.files.base import ContentFile
 
 
 @shared_task
 def send_notifications():
+    emails = User.objects.values_list('email', flat=True).distinct('email').exclude(email='')
+    send_mail(
+        'Notifier',
+        'Привет, это рассылка сообщений от Notifier! Пользуйтесь нашим сервисом!',
+        EMAIL_HOST_USER,
+        list(emails)
+    )
     print('notifications successfully sent')
 
 
 @shared_task
 def get_and_add_new_events():
     # get_and_add_kudaGo_events()
-    get_and_add_films_events()
-    get_and_add_serials_events()
+    # get_and_add_films_events()
+    # get_and_add_serials_events()
     print('events added')
 
 
